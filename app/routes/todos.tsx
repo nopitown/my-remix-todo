@@ -1,6 +1,7 @@
 import { Todo } from "@prisma/client";
 import { useEffect, useRef } from "react";
 import {
+  LinksFunction,
   ActionFunction,
   Form,
   json,
@@ -9,9 +10,14 @@ import {
   useTransition,
 } from "remix";
 import { db } from "~/utils/db.server";
+import stylesUrl from "~/styles/todos.css";
 
 type LoaderData = {
   todos: Array<Todo>;
+};
+
+export const links: LinksFunction = () => {
+  return [{ rel: "stylesheet", href: stylesUrl }];
 };
 
 export const loader = async () => {
