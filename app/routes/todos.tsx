@@ -8,6 +8,7 @@ import {
   useLoaderData,
   useSubmit,
   useTransition,
+  useActionData,
 } from "remix";
 import { db } from "~/utils/db.server";
 import stylesUrl from "~/styles/todos.css";
@@ -102,6 +103,7 @@ export default function Todos() {
   const { todos } = useLoaderData<LoaderData>();
   const transition = useTransition();
   const submit = useSubmit();
+  const errors = useActionData();
 
   const isAdding =
     transition.state === "submitting" &&
@@ -122,6 +124,9 @@ export default function Todos() {
 
   return (
     <div>
+      <p className="error">
+        {errors?.formError ? <span>{errors.formError}</span> : null}
+      </p>
       <Form method="post" ref={formRef}>
         <input type="text" name="title" ref={inputRef} />
         <button type="submit" name="_action" value="create" disabled={isAdding}>

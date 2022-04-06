@@ -5,3 +5,7 @@ ul {
     row-gap: 10px;
     display: flex;
 }
+
+.error {
+    color: red;
+}
