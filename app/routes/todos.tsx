@@ -36,12 +36,14 @@ export const action: ActionFunction = async ({ request }) => {
     case "create": {
       const title = formData.get("title");
 
-      if (typeof title !== "string") {
+      if (typeof title !== "string" || title?.length === 0) {
         return json(
           {
-            formError: `Form not submitted correctly.`,
+            formError: "Form not submitted correctly",
           },
-          { status: 400 }
+          {
+            status: 400,
+          }
         );
       }
 
@@ -61,32 +63,34 @@ export const action: ActionFunction = async ({ request }) => {
       const id = formData.get("id");
       const completed = formData.get("completed");
 
-      if (typeof id !== "string" || typeof completed !== "string") {
+      if (
+        typeof id !== "string" ||
+        id?.length === 0 ||
+        typeof completed !== "string" ||
+        completed?.length === 0
+      ) {
         return json(
           {
-            formError: `Form not submitted correctly.`,
+            formError: "Form not submitted correctly",
           },
-          { status: 400 }
+          {
+            status: 400,
+          }
         );
       }
 
       const updatedTodo = await db.todo.update({
         where: {
-          id: parseInt(id),
+          id: Number(id),
         },
         data: {
           completed: JSON.parse(completed),
         },
       });
 
-      return json(
-        {
-          todo: updatedTodo,
-        },
-        {
-          status: 200,
-        }
-      );
+      return json(updatedTodo, {
+        status: 200,
+      });
     }
     default: {
       throw new Error("Unexpected action");
